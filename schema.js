@@ -30,6 +30,8 @@ var typeDef = `
     type Query {
         curs(id: Int!): Curs
         cursuri(titlu: String): [Curs]
+
+        cursuriNoi: [CursInterfata!]!
     }
 
     type Mutation {
@@ -38,6 +40,8 @@ var typeDef = `
 
         creareToken(user: String!, password: String!): Auth
         verificareToken(token: String!): Auth
+
+        creareCursProgramare(input: CursProgramareInput): CursProgramare
     }
 
     # declararea subscriptie, specificand evenimentul la care se face subscribe
@@ -45,6 +49,32 @@ var typeDef = `
         cursAdaugat: Curs!
     }
 
+    interface CursInterfata {
+        id: ID!
+        titlu: String!
+    }
+
+    type CursProgramare implements CursInterfata {
+        id: ID!
+        titlu: String!
+        limbaj: String!
+    }
+
+    type CursContabilitate implements CursInterfata {
+        id: ID!
+        titlu: String!
+        balanta: Int!
+    }
+
+    input CursProgramareInput {
+        titlu: String!
+        limbaj: String!
+    }
+
+    input CursContabilitateInput {
+        titlu: String!
+        balanta: Int!
+    }
 
 `;
 

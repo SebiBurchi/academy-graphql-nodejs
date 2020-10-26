@@ -34,6 +34,9 @@ var cursuriData = [
     }
 ]
 
+var cursuriNewData = [];
+var cursNewId = 1;
+
 // definire resolver
 const resolvers = {
     Subscription: {
@@ -61,6 +64,10 @@ const resolvers = {
             } else {
                 return cursuriData;
             }
+        },
+
+        cursuriNoi: (parent, args, context) => {
+            return cursuriNewData;
         }
     },
 
@@ -100,7 +107,33 @@ const resolvers = {
         verificareToken: (parent, args, context) => {
             const { token } = args;
             return verificareToken(token);
+        },
+
+        creareCursProgramare: (parent, args, context, info) => {
+            const cursNou = {
+                id: cursNewId++,
+                titlu: args.input.titlu,
+                limbaj: args.input.limbaj
+            };
+
+            cursuriNewData.push(cursNou);
+
+            return cursNou;
         }
+    },
+
+    CursInterfata: {
+        __resolveType(cursInterfata, context, info) {
+            if(cursInterfata.limbaj) {
+                return 'CursProgramare';
+            }
+
+            if(cursInterfata.balanta) {
+                return 'CursContabilitate';
+            }
+
+            return null;
+        },
     }
 }
 
